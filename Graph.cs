@@ -9,7 +9,7 @@ namespace GraphTheory
 {
     public class Graph
     {
-        public Dictionary<int, List<Tuple<int, int>>> adjacencyList;
+        private Dictionary<int, List<Tuple<int, int>>> adjacencyList;
         private HashSet<int> visited;
         public Graph()
         {
