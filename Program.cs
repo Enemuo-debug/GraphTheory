@@ -33,9 +33,6 @@ class Program
         graph.AddLink(9, 10, 2);
 
         Console.WriteLine("DFS starting from node 1:");
-        graph.DFSHelper(1);
-
-        Console.WriteLine("\nDFS starting from node 3 (stop at node 9):");
-        graph.DFSHelper(3, 9);
+        graph.BFS(1);
     }
 }

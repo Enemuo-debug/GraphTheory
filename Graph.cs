@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +10,7 @@ namespace GraphTheory
     public class Graph
     {
         public Dictionary<int, List<Tuple<int, int>>> adjacencyList;
-        private List<int> visited;
+        private HashSet<int> visited;
         public Graph()
         {
             adjacencyList = [];
@@ -50,7 +52,7 @@ namespace GraphTheory
         private void DFS(int startNode, int end)
         {
             if (!adjacencyList.ContainsKey(startNode)) return;
-            if (visited.IndexOf(startNode) != -1) return;
+            if (visited.Contains(startNode)) return;
             Console.WriteLine(startNode);
             visited.Add(startNode);
             if (startNode == end) return;
@@ -63,6 +65,33 @@ namespace GraphTheory
         {
             visited.Clear();
             DFS(startNode, endNode);
+        }
+        public void BFS(int start)
+        {
+            if (!adjacencyList.ContainsKey(start)) return;
+
+            Queue<int> processQueue = new Queue<int>();
+
+            // Clear visited hash set
+            visited.Clear();
+
+            processQueue.Enqueue(start);
+            visited.Add(start);
+
+            while (processQueue.Count > 0)
+            {
+                int current = processQueue.Dequeue();
+                Console.WriteLine(current);
+
+                foreach (Tuple<int, int> neighbor in adjacencyList[current])
+                {
+                    if (!visited.Contains(neighbor.Item1))
+                    {
+                        processQueue.Enqueue(neighbor.Item1);
+                        visited.Add(neighbor.Item1);
+                    }
+                }
+            }
         }
     }
 }
