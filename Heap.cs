@@ -7,28 +7,28 @@ namespace GraphTheory
 {
     public class Heap
     {
-        public List<int> _heap;
+        private List<Tuple<int, int>> priorityQueue;
         public Heap()
         {
-            _heap = [];
+            priorityQueue = [];
         }
-        public void Add(int x)
+        public void Add(Tuple<int, int> x)
         {
-            _heap.Add(x);
-            FixHeapFromBottom(_heap.Count - 1);
+            priorityQueue.Add(x);
+            FixHeapFromBottom(priorityQueue.Count - 1);
         }
-        public int? Peek()
+        public Tuple<int, int>? Peek()
         {
             // Get the minimum element without removing it
-            if (_heap.Count == 0) return null;
-            return _heap[0];
+            if (priorityQueue.Count == 0) return null;
+            return priorityQueue[0];
         }
-        public int? Pop()
+        public Tuple<int, int>? Pop()
         {
-            if (_heap.Count == 0) return null;
-            int output = _heap[0];
-            _heap[0] = _heap[_heap.Count - 1];
-            _heap.RemoveAt(_heap.Count - 1);
+            if (priorityQueue.Count == 0) return null;
+            Tuple<int, int> output = priorityQueue[0];
+            priorityQueue[0] = priorityQueue[priorityQueue.Count - 1];
+            priorityQueue.RemoveAt(priorityQueue.Count - 1);
             FixHeapFromTop();
             return output;
         }
@@ -37,8 +37,8 @@ namespace GraphTheory
             int leftChildIndex = 2 * index + 1;
             int rightChildIndex = 2 * index + 2;
             int smallest = index;
-            if (leftChildIndex < _heap.Count && _heap[leftChildIndex] < _heap[smallest]) smallest = leftChildIndex;
-            if (rightChildIndex < _heap.Count && _heap[rightChildIndex] < _heap[smallest]) smallest = rightChildIndex;
+            if (leftChildIndex < priorityQueue.Count && priorityQueue[leftChildIndex].Item2 < priorityQueue[smallest].Item2) smallest = leftChildIndex;
+            if (rightChildIndex < priorityQueue.Count && priorityQueue[rightChildIndex].Item2 < priorityQueue[smallest].Item2) smallest = rightChildIndex;
             if (smallest != index)
             {
                 Swap(index, smallest);
@@ -47,19 +47,23 @@ namespace GraphTheory
         }
         public void Swap(int a, int b)
         {
-            _heap[a] += _heap[b];
-            _heap[b] = _heap[a] - _heap[b];
-            _heap[a] -= _heap[b];
+            Tuple<int, int> temp = priorityQueue[a];
+            priorityQueue[a] = priorityQueue[b];
+            priorityQueue[b] = temp;
         }
         public void FixHeapFromBottom(int index)
         {
-            if (index <= 0 || index >= _heap.Count) return;
+            if (index <= 0 || index >= priorityQueue.Count) return;
             int parentIndex = (index - 1) / 2;
-            if (_heap[index] < _heap[parentIndex])
+            if (priorityQueue[index].Item2 < priorityQueue[parentIndex].Item2)
             {
                 Swap(index, parentIndex);
                 FixHeapFromBottom(parentIndex);
             }
+        }
+        public bool IsEmpty()
+        {
+            return priorityQueue.Count <= 0;
         }
     }
 }
