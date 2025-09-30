@@ -66,9 +66,9 @@ namespace GraphTheory
             visited.Clear();
             DFS(startNode, endNode);
         }
-        public void BFS(int start)
+        public void BFS(int start, int end = -1)
         {
-            if (!adjacencyList.ContainsKey(start)) return;
+            if (!adjacencyList.ContainsKey(start) || !adjacencyList.ContainsKey(end)) return;
 
             Queue<int> processQueue = new Queue<int>();
 
@@ -87,6 +87,10 @@ namespace GraphTheory
                 {
                     if (!visited.Contains(neighbor.Item1))
                     {
+                        if (neighbor.Item1 == end)
+                        {
+                            return;
+                        }
                         processQueue.Enqueue(neighbor.Item1);
                         visited.Add(neighbor.Item1);
                     }
