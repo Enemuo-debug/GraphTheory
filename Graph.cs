@@ -97,5 +97,26 @@ namespace GraphTheory
                 }
             }
         }
+
+        // Single point shortest path algorithm
+        public void DijkstraAlgorithm(int start = adjacencyList.Keys[0]) 
+        {
+            if (!adjacencyList.ContainsKey(start)) {
+                Console.WriteLine("This starting point is not a part of this graph")
+            }
+            // Create a priority queue and a copy of the adjacency list 
+            // linking the nodes to their costs and the previous nodes
+            // And also clearing the visited List
+            Heap priorityQueue = new Heap();
+            Dictionary<int, Tuple<int, int>> localAdjacencyList = new Dictionary<int, Tuple<int, int>> ();
+            Tuple<int, int> traversing = Tuple.Create(start, adjacencyList[start])
+            priorityQueue.Add(traversing)
+
+            while (!priorityQueue.IsEmpty())
+            {
+                traversing = priorityQueue.Pop();
+                
+            }
+        }
     }
 }

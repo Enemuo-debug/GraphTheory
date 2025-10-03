@@ -65,5 +65,9 @@ namespace GraphTheory
         {
             return priorityQueue.Count <= 0;
         }
+        public int HeapSize ()
+        {
+            return priorityQueue.Count;
+        }
     }
 }
