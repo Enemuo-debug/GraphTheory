@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,8 +9,8 @@ namespace GraphTheory
 {
     public class Graph
     {
-        public Dictionary<int, List<Tuple<int, int>>> adjacencyList;
-        private List<int> visited;
+        private Dictionary<int, List<Tuple<int, int>>> adjacencyList;
+        private HashSet<int> visited;
         public Graph()
         {
             adjacencyList = [];
@@ -50,7 +52,7 @@ namespace GraphTheory
         private void DFS(int startNode, int end)
         {
             if (!adjacencyList.ContainsKey(startNode)) return;
-            if (visited.IndexOf(startNode) != -1) return;
+            if (visited.Contains(startNode)) return;
             Console.WriteLine(startNode);
             visited.Add(startNode);
             if (startNode == end) return;
@@ -63,6 +65,58 @@ namespace GraphTheory
         {
             visited.Clear();
             DFS(startNode, endNode);
+        }
+        public void BFS(int start, int end = -1)
+        {
+            if (!adjacencyList.ContainsKey(start) || !adjacencyList.ContainsKey(end)) return;
+
+            Queue<int> processQueue = new Queue<int>();
+
+            // Clear visited hash set
+            visited.Clear();
+
+            processQueue.Enqueue(start);
+            visited.Add(start);
+
+            while (processQueue.Count > 0)
+            {
+                int current = processQueue.Dequeue();
+                Console.WriteLine(current);
+
+                foreach (Tuple<int, int> neighbor in adjacencyList[current])
+                {
+                    if (!visited.Contains(neighbor.Item1))
+                    {
+                        if (neighbor.Item1 == end)
+                        {
+                            return;
+                        }
+                        processQueue.Enqueue(neighbor.Item1);
+                        visited.Add(neighbor.Item1);
+                    }
+                }
+            }
+        }
+
+        // Single point shortest path algorithm
+        public void DijkstraAlgorithm(int start = adjacencyList.Keys[0]) 
+        {
+            if (!adjacencyList.ContainsKey(start)) {
+                Console.WriteLine("This starting point is not a part of this graph")
+            }
+            // Create a priority queue and a copy of the adjacency list 
+            // linking the nodes to their costs and the previous nodes
+            // And also clearing the visited List
+            Heap priorityQueue = new Heap();
+            Dictionary<int, Tuple<int, int>> localAdjacencyList = new Dictionary<int, Tuple<int, int>> ();
+            Tuple<int, int> traversing = Tuple.Create(start, adjacencyList[start])
+            priorityQueue.Add(traversing)
+
+            while (!priorityQueue.IsEmpty())
+            {
+                traversing = priorityQueue.Pop();
+                
+            }
         }
     }
 }
